@@ -45,30 +45,15 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-      if (error) throw error;
-      return data;
-    } else {
-      // Local development fallback
-      if (email === 'admin@nammudepicks.in' && password === 'admin123') {
-        const mockUser = {
-          id: 'admin-local-01',
-          email: 'admin@nammudepicks.in',
-          role: 'authenticated',
-          user_metadata: { name: 'Store Owner' }
-        };
-        localStorage.setItem(LOCAL_ADMIN_KEY, JSON.stringify(mockUser));
-        setUser(mockUser);
-        setSession({ user: mockUser });
-        return { user: mockUser, session: { user: mockUser } };
-      } else {
-        throw new Error('Invalid demo credentials. Use admin@nammudepicks.in / admin123, or connect Supabase in .env.');
-      }
+    if (!supabase) {
+      throw new Error('Supabase client is not configured. Please check your .env file.');
     }
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    if (error) throw error;
+    return data;
   };
 
   const logout = async () => {

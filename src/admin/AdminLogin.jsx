@@ -64,30 +64,6 @@ export default function AdminLogin() {
           </p>
         </div>
 
-        {/* Supabase Status Indicator */}
-        <div className={`p-3 rounded-xl border text-xs flex items-start gap-2.5 ${
-          isSupabaseConfigured
-            ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
-            : 'bg-amber-50 border-amber-200 text-amber-900'
-        }`}>
-          {isSupabaseConfigured ? (
-            <>
-              <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <span className="font-bold">Live Supabase Database Connected.</span> Log in using your registered admin email & password.
-              </div>
-            </>
-          ) : (
-            <>
-              <Info className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
-              <div>
-                <span className="font-bold">Local Demo Mode:</span> Supabase credentials not yet configured in .env. You can test the dashboard using: <br />
-                <code className="bg-amber-200/60 px-1 py-0.5 rounded font-mono font-bold mt-1 inline-block">admin@nammudepicks.in</code> / <code className="bg-amber-200/60 px-1 py-0.5 rounded font-mono font-bold">admin123</code>
-              </div>
-            </>
-          )}
-        </div>
-
         {/* Error message */}
         {error && (
           <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-2">
