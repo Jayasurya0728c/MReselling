@@ -713,6 +713,9 @@ export async function saveStoreSettings(settings) {
       body: JSON.stringify(settings)
     });
     if (res.ok) {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('nammude_settings_updated'));
+      }
       return { success: true };
     }
   } catch (e) {}

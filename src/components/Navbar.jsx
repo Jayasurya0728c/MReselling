@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Search, Menu, X, ArrowRight, ShieldCheck, MessageCircle, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useStore } from '../context/StoreContext';
 import storeConfig from '../config/storeConfig';
 
 export default function Navbar() {
   const { itemCount, setIsCartOpen, notification } = useCart();
+  const { settings } = useStore();
+  const config = settings || storeConfig;
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -40,21 +43,21 @@ export default function Navbar() {
       )}
 
       {/* 1. Announcement Bar */}
-      {storeConfig.showAnnouncement && (
+      {config.showAnnouncement !== false && config.announcementText && (
         <div className="bg-brand-800 text-white text-xs sm:text-sm py-2 px-4">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
               <span className="bg-brand-600 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full">
                 Kerala
               </span>
-              <span className="font-medium truncate">{storeConfig.announcementText}</span>
+              <span className="font-medium truncate">{config.announcementText}</span>
             </div>
             <div className="hidden md:flex items-center gap-4 text-xs text-brand-100 flex-shrink-0">
               <span className="flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-brand-300" /> 100% Cash on Delivery
               </span>
               <a
-                href={`https://wa.me/${storeConfig.whatsappNumber.replace(/[^0-9]/g, '')}`}
+                href={`https://wa.me/${(config.whatsappNumber || storeConfig.whatsappNumber).replace(/[^0-9]/g, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 hover:text-white transition-colors"

@@ -495,7 +495,34 @@
     "whatsappNumber": "91YOURWHATSAPPNUMBER",
     "deliveryFee": 49,
     "freeShippingThreshold": 999,
-    "announcementText": "✨ Special Kerala Offer: Free Delivery on orders above ₹999 | Cash on Delivery (COD) Available!",
-    "showAnnouncement": true
+    "announcementText": "✨ Special Offer: Free Delivery on orders above ₹999 | Cash on Delivery (COD) Available!",
+    "showAnnouncement": true,
+    "tagline": "Nalla Finds. Nalla Prices.",
+    "description": "Curated, stylish and affordable finds for everyday life in Kerala. 100% Cash on Delivery available across all 14 districts.",
+    "whatsappDisplay": "+91 (Your WhatsApp Number)",
+    "instagramUrl": "https://instagram.com/nammudepicks",
+    "instagramHandle": "@nammudepicks",
+    "contactEmail": "support@nammudepicks.in",
+    "defaultState": "Kerala",
+    "operatingDistricts": [
+      "Alappuzha",
+      "Ernakulam",
+      "Idukki",
+      "Kannur",
+      "Kasaragod",
+      "Kollam",
+      "Kottayam",
+      "Kozhikode",
+      "Malappuram",
+      "Palakkad",
+      "Pathanamthitta",
+      "Thiruvananthapuram",
+      "Thrissur",
+      "Wayanad"
+    ],
+    "currencySymbol": "₹",
+    "codAvailable": true,
+    "independentResellerDisclaimer": "Nammude Picks is an independent curated online storefront. We handpick quality products, manually verify orders, and fulfill them via reputable Indian suppliers and manufacturers. We are not officially affiliated with or endorsed by Meesho.",
+    "deliveryEstimateDays": "3 to 7 business days across Kerala"
   }
 }
