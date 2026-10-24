@@ -178,7 +178,8 @@ export async function fetchProducts({ isAdmin = false } = {}) {
       headers['Authorization'] = `Bearer ${token}`;
     }
     const res = await fetch('/api/products', { headers });
-    if (res.ok) {
+    const contentType = res.headers.get('content-type');
+    if (res.ok && contentType && contentType.includes('application/json')) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
         return data;
@@ -282,7 +283,8 @@ export async function saveProduct(productData) {
       },
       body: JSON.stringify(productData)
     });
-    if (res.ok) {
+    const contentType = res.headers.get('content-type');
+    if (res.ok && contentType && contentType.includes('application/json')) {
       const saved = await res.json();
       return { success: true, id: saved.id };
     }
@@ -386,7 +388,8 @@ export async function deleteProduct(productId) {
       method: 'DELETE',
       headers: token ? { 'Authorization': `Bearer ${token}` } : {}
     });
-    if (res.ok) {
+    const contentType = res.headers.get('content-type');
+    if (res.ok && contentType && contentType.includes('application/json')) {
       return { success: true };
     }
   } catch (e) {}
@@ -424,7 +427,8 @@ export async function createOrder(orderPayload) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...orderPayload, reference })
     });
-    if (res.ok) {
+    const contentType = res.headers.get('content-type');
+    if (res.ok && contentType && contentType.includes('application/json')) {
       const data = await res.json();
       return { success: true, reference: data.reference, id: data.id };
     }
@@ -522,7 +526,8 @@ export async function fetchOrders() {
     const res = await fetch('/api/orders', {
       headers: token ? { 'Authorization': `Bearer ${token}` } : {}
     });
-    if (res.ok) {
+    const contentType = res.headers.get('content-type');
+    if (res.ok && contentType && contentType.includes('application/json')) {
       const data = await res.json();
       if (Array.isArray(data)) {
         return data;
@@ -605,7 +610,8 @@ export async function updateOrder(orderId, updates) {
       },
       body: JSON.stringify(updates)
     });
-    if (res.ok) {
+    const contentType = res.headers.get('content-type');
+    if (res.ok && contentType && contentType.includes('application/json')) {
       return { success: true };
     }
   } catch (e) {}
@@ -653,7 +659,8 @@ export async function fetchStoreSettings() {
   // 1. Try local API first
   try {
     const res = await fetch('/api/settings');
-    if (res.ok) {
+    const contentType = res.headers.get('content-type');
+    if (res.ok && contentType && contentType.includes('application/json')) {
       const data = await res.json();
       if (data && data.storeName) {
         return {
@@ -712,7 +719,8 @@ export async function saveStoreSettings(settings) {
       },
       body: JSON.stringify(settings)
     });
-    if (res.ok) {
+    const contentType = res.headers.get('content-type');
+    if (res.ok && contentType && contentType.includes('application/json')) {
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new Event('nammude_settings_updated'));
       }
