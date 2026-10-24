@@ -117,7 +117,7 @@ export default function AdminLayout() {
             </div>
             <div className="flex items-center gap-1.5 text-emerald-700 font-semibold">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Supabase PostgreSQL Active</span>
+              <span>Active Database Connected</span>
             </div>
           </div>
 

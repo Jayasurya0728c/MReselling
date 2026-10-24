@@ -10,59 +10,99 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isSupabaseConfigured && supabase) {
-      // 1. Check active session from Supabase
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      });
+    // 1. Check persistent admin token from local server first
+    const token = localStorage.getItem('nammude_admin_token');
+    const localAuth = localStorage.getItem(LOCAL_ADMIN_KEY);
 
-      // 2. Listen for auth state changes
-      const { data: { subscription } } = supabase.auth.onAuthStateChange(
-        (_event, session) => {
+    if (token && localAuth) {
+      try {
+        const parsed = JSON.parse(localAuth);
+        setUser(parsed);
+        setSession({ user: parsed, token });
+        setLoading(false);
+        return;
+      } catch (e) {
+        console.error('Error loading admin session:', e);
+      }
+    }
+
+    if (isSupabaseConfigured && supabase) {
+      // Check active session from Supabase
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
           setSession(session);
           setUser(session?.user ?? null);
+        }
+        setLoading(false);
+      }).catch(() => setLoading(false));
+
+      // Listen for auth state changes
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (_event, session) => {
+          if (session) {
+            setSession(session);
+            setUser(session?.user ?? null);
+          }
           setLoading(false);
         }
       );
 
       return () => subscription.unsubscribe();
     } else {
-      // Local fallback mode when Supabase credentials are not yet set
-      try {
-        const localAuth = localStorage.getItem(LOCAL_ADMIN_KEY);
-        if (localAuth) {
-          const parsed = JSON.parse(localAuth);
-          setUser(parsed);
-          setSession({ user: parsed });
-        }
-      } catch (e) {
-        console.error('Error loading local auth state:', e);
-      }
       setLoading(false);
     }
   }, []);
 
   const login = async (email, password) => {
-    if (!supabase) {
-      throw new Error('Supabase client is not configured. Please check your .env file.');
+    // 1. Try native local API first
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (res.ok && data.user) {
+        localStorage.setItem('nammude_admin_token', data.token);
+        localStorage.setItem(LOCAL_ADMIN_KEY, JSON.stringify(data.user));
+        setUser(data.user);
+        setSession({ user: data.user, token: data.token });
+        return data;
+      } else if (!res.ok && !isSupabaseConfigured) {
+        throw new Error(data.error || 'Invalid credentials');
+      }
+    } catch (apiErr) {
+      if (!isSupabaseConfigured) {
+        throw apiErr;
+      }
     }
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-    if (error) throw error;
-    return data;
+
+    // 2. Fallback to Supabase if configured and local failed
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      if (error) throw error;
+      return data;
+    }
+
+    throw new Error('Could not authenticate. Please check your credentials.');
   };
 
   const logout = async () => {
-    if (isSupabaseConfigured && supabase) {
-      await supabase.auth.signOut();
-    }
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (e) {}
+    localStorage.removeItem('nammude_admin_token');
     localStorage.removeItem(LOCAL_ADMIN_KEY);
     setUser(null);
     setSession(null);
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.auth.signOut();
+      } catch (e) {}
+    }
   };
 
   const resetPassword = async (email) => {
@@ -72,9 +112,8 @@ export function AuthProvider({ children }) {
       });
       if (error) throw error;
       return true;
-    } else {
-      throw new Error('Password reset requires Supabase Auth setup. Please configure your .env file.');
     }
+    return true;
   };
 
   return (

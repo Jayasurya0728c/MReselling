@@ -28,12 +28,7 @@ export default function AdminLogin() {
       await login(email, password);
       navigate('/admin');
     } catch (err) {
-      if (err.message === 'Failed to fetch' || err.name === 'TypeError') {
-        const url = import.meta.env.VITE_SUPABASE_URL || 'configured URL';
-        setError(`Cannot reach Supabase at ${url}. Please verify your internet connection or check if your Supabase project is active (not paused) in your Supabase dashboard.`);
-      } else {
-        setError(err.message || 'Failed to login. Please check credentials.');
-      }
+      setError(err.message || 'Failed to login. Please check credentials.');
     } finally {
       setLoading(false);
     }

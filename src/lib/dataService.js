@@ -170,6 +170,24 @@ function setLocalOrders(orders) {
  * @param {boolean} isAdmin - If false, private supplier cost/url are strictly stripped.
  */
 export async function fetchProducts({ isAdmin = false } = {}) {
+  // 1. Try native backend API
+  try {
+    const token = localStorage.getItem('nammude_admin_token');
+    const headers = {};
+    if (isAdmin && token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    const res = await fetch('/api/products', { headers });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        return data;
+      }
+    }
+  } catch (e) {
+    // continue to Supabase
+  }
+
   if (isSupabaseConfigured && supabase) {
     try {
       if (isAdmin) {
@@ -250,6 +268,27 @@ export async function fetchProductBySlug(slug, { isAdmin = false } = {}) {
 export async function saveProduct(productData) {
   const { supplierCost, supplierUrl, supplierSku, ...publicFields } = productData;
   const isEditing = Boolean(productData.id && productData.id.trim());
+
+  // 1. Try local API first
+  try {
+    const token = localStorage.getItem('nammude_admin_token');
+    const url = isEditing ? `/api/products/${productData.id}` : '/api/products';
+    const method = isEditing ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(productData)
+    });
+    if (res.ok) {
+      const saved = await res.json();
+      return { success: true, id: saved.id };
+    }
+  } catch (e) {
+    // continue
+  }
 
   if (isSupabaseConfigured && supabase) {
     try {
@@ -341,6 +380,17 @@ export async function saveProduct(productData) {
  * Delete product (Admin only)
  */
 export async function deleteProduct(productId) {
+  try {
+    const token = localStorage.getItem('nammude_admin_token');
+    const res = await fetch(`/api/products/${productId}`, {
+      method: 'DELETE',
+      headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+    });
+    if (res.ok) {
+      return { success: true };
+    }
+  } catch (e) {}
+
   if (isSupabaseConfigured && supabase) {
     try {
       const { error } = await supabase
@@ -366,6 +416,19 @@ export async function deleteProduct(productId) {
  */
 export async function createOrder(orderPayload) {
   const reference = `NP-${new Date().toISOString().slice(2, 7).replace('-', '')}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+  // 1. Try local API first
+  try {
+    const res = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...orderPayload, reference })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      return { success: true, reference: data.reference, id: data.id };
+    }
+  } catch (e) {}
 
   if (isSupabaseConfigured && supabase) {
     try {
@@ -453,6 +516,20 @@ export async function createOrder(orderPayload) {
  * Fetch all orders (Admin only)
  */
 export async function fetchOrders() {
+  // 1. Try local API first
+  try {
+    const token = localStorage.getItem('nammude_admin_token');
+    const res = await fetch('/api/orders', {
+      headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        return data;
+      }
+    }
+  } catch (e) {}
+
   if (isSupabaseConfigured && supabase) {
     try {
       const { data, error } = await supabase
@@ -517,6 +594,22 @@ export async function fetchOrders() {
  * Update order status, supplier reference, tracking or internal admin notes (Admin only)
  */
 export async function updateOrder(orderId, updates) {
+  // 1. Try local API first
+  try {
+    const token = localStorage.getItem('nammude_admin_token');
+    const res = await fetch(`/api/orders/${orderId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(updates)
+    });
+    if (res.ok) {
+      return { success: true };
+    }
+  } catch (e) {}
+
   if (isSupabaseConfigured && supabase) {
     try {
       const payload = {
@@ -557,6 +650,20 @@ export async function updateOrder(orderId, updates) {
 // ================= STORE SETTINGS FUNCTIONS =================
 
 export async function fetchStoreSettings() {
+  // 1. Try local API first
+  try {
+    const res = await fetch('/api/settings');
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.storeName) {
+        return {
+          ...storeConfig,
+          ...data
+        };
+      }
+    }
+  } catch (e) {}
+
   if (isSupabaseConfigured && supabase) {
     try {
       const { data, error } = await supabase
@@ -594,6 +701,22 @@ export async function fetchStoreSettings() {
 }
 
 export async function saveStoreSettings(settings) {
+  // 1. Try local API first
+  try {
+    const token = localStorage.getItem('nammude_admin_token');
+    const res = await fetch('/api/settings', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(settings)
+    });
+    if (res.ok) {
+      return { success: true };
+    }
+  } catch (e) {}
+
   if (isSupabaseConfigured && supabase) {
     try {
       const { error } = await supabase
