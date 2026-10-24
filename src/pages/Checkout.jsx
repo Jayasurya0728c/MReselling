@@ -12,12 +12,15 @@ import {
   Lock
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useStore } from '../context/StoreContext';
 import { createOrder } from '../lib/dataService';
 import { formatCurrency, formatWhatsAppOrderMessage, buildWhatsAppOrderUrl } from '../utils/orderUtils';
 import storeConfig from '../config/storeConfig';
 
 export default function Checkout() {
   const { cart, subtotal, shippingFee, totalCODAmount, clearCart } = useCart();
+  const { settings } = useStore();
+  const config = settings || storeConfig;
   const navigate = useNavigate();
 
   // Form state (NEVER saved to localStorage to protect privacy)
@@ -156,7 +159,7 @@ export default function Checkout() {
         setWhatsappMessage(msg);
 
         // 4. Open WhatsApp automatically
-        const whatsappUrl = buildWhatsAppOrderUrl(msg, storeConfig.whatsappNumber);
+        const whatsappUrl = buildWhatsAppOrderUrl(msg, config.whatsappNumber || storeConfig.whatsappNumber);
         window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
 
         // 5. Clear cart from localStorage

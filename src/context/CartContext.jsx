@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useStore } from './StoreContext';
 import storeConfig from '../config/storeConfig';
 
 const CartContext = createContext(null);
 const CART_STORAGE_KEY = 'nammude_picks_cart_v1';
 
 export function CartProvider({ children }) {
+  const { settings } = useStore();
+  const config = settings || storeConfig;
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem(CART_STORAGE_KEY);
@@ -102,9 +105,10 @@ export function CartProvider({ children }) {
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   
   // Shipping calculation
-  const freeShippingThreshold = storeConfig.freeShippingThreshold;
+  const freeShippingThreshold = config.freeShippingThreshold !== undefined ? config.freeShippingThreshold : storeConfig.freeShippingThreshold;
+  const deliveryFee = config.deliveryFee !== undefined ? Number(config.deliveryFee) : storeConfig.deliveryFee;
   const isFreeShipping = freeShippingThreshold ? subtotal >= freeShippingThreshold : false;
-  const shippingFee = cart.length === 0 ? 0 : (isFreeShipping ? 0 : storeConfig.deliveryFee);
+  const shippingFee = cart.length === 0 ? 0 : (isFreeShipping ? 0 : deliveryFee);
   const totalCODAmount = subtotal + shippingFee;
 
   return (
