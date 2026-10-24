@@ -480,7 +480,7 @@ export default function AdminProducts() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g. Kerala Palakka Necklace"
+                    placeholder="e.g. Traditional Palakka Motif Choker Necklace"
                     className="w-full bg-warm-50 border border-warm-300 rounded-xl p-2.5 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700"
                   />
                 </div>

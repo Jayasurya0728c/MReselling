@@ -25,8 +25,8 @@ export default function PrivacyPolicy() {
           </p>
           <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm">
             <li>Your full name.</li>
-            <li>Your 10-digit Indian mobile / WhatsApp number.</li>
-            <li>Your complete postal delivery address in Kerala (house name, locality, post office, district, PIN code).</li>
+            <li>Your 10-digit Indian mobile / contact phone number.</li>
+            <li>Your complete postal delivery address across India (house/flat name, locality, city/town, state, and 6-digit PIN code).</li>
             <li>Any specific delivery instructions you provide.</li>
           </ul>
         </section>
@@ -56,10 +56,10 @@ export default function PrivacyPolicy() {
 
         <section className="space-y-3">
           <h2 className="font-display font-bold text-lg text-neutral-900">
-            4. Third-Party Links & Messaging
+            4. Order Placement & Third-Party Platforms
           </h2>
           <p className="text-xs sm:text-sm">
-            When you click "Send COD Order via WhatsApp", you are redirected to WhatsApp (a Meta platform). Your interactions with WhatsApp are governed by Meta's privacy policy.
+            Orders are placed directly on our website and securely stored in our backend order management system. If you contact our support team via WhatsApp, your interactions on that platform are governed by Meta's privacy policy.
           </p>
         </section>
 

@@ -3,19 +3,22 @@ import { useNavigate, Link } from 'react-router-dom';
 import {
   ShieldCheck,
   Truck,
-  MessageCircle,
-  Copy,
   CheckCircle2,
   AlertCircle,
   ArrowRight,
   ExternalLink,
-  Lock
+  Lock,
+  Package,
+  Clock,
+  Phone,
+  MapPin,
+  MessageCircle
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useStore } from '../context/StoreContext';
 import { createOrder } from '../lib/dataService';
-import { formatCurrency, formatWhatsAppOrderMessage, buildWhatsAppOrderUrl } from '../utils/orderUtils';
-import storeConfig from '../config/storeConfig';
+import { formatCurrency } from '../utils/orderUtils';
+import storeConfig, { INDIAN_STATES } from '../config/storeConfig';
 
 export default function Checkout() {
   const { cart, subtotal, shippingFee, totalCODAmount, clearCart } = useCart();
@@ -23,15 +26,14 @@ export default function Checkout() {
   const config = settings || storeConfig;
   const navigate = useNavigate();
 
-  // Form state (NEVER saved to localStorage to protect privacy)
+  // Form state
   const [formData, setFormData] = useState({
     customerName: '',
     customerPhone: '',
     houseName: '',
     streetLocality: '',
-    postOffice: '',
-    district: 'Ernakulam',
-    state: 'Kerala',
+    city: '',
+    state: '',
     pincode: '',
     deliveryInstructions: '',
     consent: false
@@ -42,9 +44,7 @@ export default function Checkout() {
   
   // Post-submission state
   const [orderSubmitted, setOrderSubmitted] = useState(false);
-  const [submittedOrderRef, setSubmittedOrderRef] = useState('');
-  const [whatsappMessage, setWhatsappMessage] = useState('');
-  const [copiedMessage, setCopiedMessage] = useState(false);
+  const [submittedOrder, setSubmittedOrder] = useState(null);
 
   // If cart is empty and not submitted yet, show empty state
   if (cart.length === 0 && !orderSubmitted) {
@@ -79,19 +79,19 @@ export default function Checkout() {
     }
 
     if (!formData.houseName.trim()) {
-      errs.houseName = 'House name or building number is required';
+      errs.houseName = 'House name / flat / building is required';
     }
 
     if (!formData.streetLocality.trim()) {
-      errs.streetLocality = 'Street or locality is required';
+      errs.streetLocality = 'Street / locality is required';
     }
 
-    if (!formData.postOffice.trim()) {
-      errs.postOffice = 'Post office is required for postal delivery';
+    if (!formData.city.trim()) {
+      errs.city = 'City / Town / District is required';
     }
 
-    if (!formData.district) {
-      errs.district = 'Please select your Kerala district';
+    if (!formData.state) {
+      errs.state = 'Please select your state / union territory';
     }
 
     const cleanPin = formData.pincode.replace(/\D/g, '');
@@ -100,7 +100,7 @@ export default function Checkout() {
     }
 
     if (!formData.consent) {
-      errs.consent = 'You must consent to sharing your details for order verification and fulfillment';
+      errs.consent = 'You must consent to sharing your details for order delivery';
     }
 
     setErrors(errs);
@@ -128,14 +128,14 @@ export default function Checkout() {
         totalPrice: item.price * item.quantity
       }));
 
-      // 2. Save order record
+      // 2. Save order record directly to admin database
       const orderPayload = {
         customerName: formData.customerName.trim(),
         customerPhone: formData.customerPhone.replace(/\D/g, ''),
         houseName: formData.houseName.trim(),
         streetLocality: formData.streetLocality.trim(),
-        postOffice: formData.postOffice.trim(),
-        district: formData.district,
+        postOffice: formData.city.trim(),
+        district: formData.city.trim(),
         state: formData.state,
         pincode: formData.pincode.trim(),
         deliveryInstructions: formData.deliveryInstructions.trim(),
@@ -148,111 +148,128 @@ export default function Checkout() {
       const result = await createOrder(orderPayload);
 
       if (result.success) {
-        const ref = result.reference;
-        setSubmittedOrderRef(ref);
-
-        // 3. Generate standard WhatsApp message
-        const msg = formatWhatsAppOrderMessage({
-          reference: ref,
+        setSubmittedOrder({
+          reference: result.reference,
           ...orderPayload
         });
-        setWhatsappMessage(msg);
-
-        // 4. Open WhatsApp automatically
-        const whatsappUrl = buildWhatsAppOrderUrl(msg, config.whatsappNumber || storeConfig.whatsappNumber);
-        window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-
-        // 5. Clear cart from localStorage
         clearCart();
         setOrderSubmitted(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        alert('Could not submit order: ' + (result.error || 'Please try again.'));
       }
     } catch (err) {
       console.error('Checkout error:', err);
-      alert('There was an issue processing your order. Please try again or message us on WhatsApp.');
+      alert('There was an issue processing your order. Please try again.');
     } finally {
       setSubmitting(false);
     }
   };
 
-  const handleCopyMessage = () => {
-    navigator.clipboard.writeText(whatsappMessage);
-    setCopiedMessage(true);
-    setTimeout(() => setCopiedMessage(false), 2500);
-  };
-
-  // SUCCESS SCREEN
-  if (orderSubmitted) {
-    const directWaUrl = buildWhatsAppOrderUrl(whatsappMessage, storeConfig.whatsappNumber);
-
+  // SUCCESS CONFIRMATION SCREEN
+  if (orderSubmitted && submittedOrder) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-10 sm:py-16 space-y-8">
         <div className="bg-white rounded-3xl border border-warm-200 shadow-soft p-6 sm:p-10 space-y-6 text-center">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto shadow-sm">
             <CheckCircle2 className="w-10 h-10" />
           </div>
 
           <div className="space-y-2">
             <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
-              Order Request Received
+              Order Confirmed & Placed
             </span>
             <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-neutral-900">
-              Order Reference: <span className="text-brand-800">{submittedOrderRef}</span>
+              Order Reference: <span className="text-brand-800">{submittedOrder.reference}</span>
             </h1>
             <p className="text-sm text-neutral-600 max-w-lg mx-auto">
-              Thank you, <strong>{formData.customerName}</strong>! Your Cash on Delivery order request has been logged in our system.
+              Thank you, <strong>{submittedOrder.customerName}</strong>! Your Cash on Delivery order has been successfully placed directly with our team.
             </p>
           </div>
 
-          {/* CRITICAL IMPORTANT CLARIFICATION BANNER */}
-          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-left space-y-2 text-xs sm:text-sm text-amber-950">
-            <div className="flex items-center gap-2 font-bold text-amber-900">
-              <AlertCircle className="w-4 h-4 text-amber-700 flex-shrink-0" />
-              <span>Next Mandatory Step: Send your WhatsApp message!</span>
+          {/* Order Details Summary Card */}
+          <div className="p-5 rounded-2xl bg-warm-50 border border-warm-200 text-left space-y-3 text-xs sm:text-sm">
+            <div className="flex items-center justify-between pb-2 border-b border-warm-200">
+              <span className="text-neutral-500 font-medium">Payment Mode</span>
+              <span className="font-bold text-brand-800 bg-brand-50 border border-brand-200 px-2.5 py-0.5 rounded-full">
+                Cash on Delivery (COD)
+              </span>
             </div>
-            <p className="text-xs text-amber-900 leading-relaxed">
-              Opening WhatsApp does not automatically mean the order has been delivered or accepted. Our team must manually verify product stock, pricing, and courier delivery to your Kerala PIN code on Meesho/supplier networks before confirming fulfillment. Please click the button below if WhatsApp did not open automatically.
-            </p>
+
+            <div className="flex items-center justify-between pb-2 border-b border-warm-200">
+              <span className="text-neutral-500 font-medium">Total Amount to Pay</span>
+              <span className="font-bold text-base text-neutral-900 font-display">
+                {formatCurrency(submittedOrder.totalAmount)}
+              </span>
+            </div>
+
+            <div className="pt-1 space-y-1">
+              <div className="text-neutral-500 font-medium flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-neutral-400" />
+                <span>Delivery Address</span>
+              </div>
+              <p className="text-neutral-800 font-semibold pl-5 leading-relaxed">
+                {submittedOrder.houseName}, {submittedOrder.streetLocality}, {submittedOrder.district}, {submittedOrder.state} - {submittedOrder.pincode}
+              </p>
+            </div>
+
+            <div className="pt-1 space-y-1">
+              <div className="text-neutral-500 font-medium flex items-center gap-1.5">
+                <Phone className="w-3.5 h-3.5 text-neutral-400" />
+                <span>Contact Mobile</span>
+              </div>
+              <p className="text-neutral-800 font-semibold pl-5">
+                +91 {submittedOrder.customerPhone}
+              </p>
+            </div>
           </div>
 
-          {/* WhatsApp Button & Copy Message Fallback */}
-          <div className="space-y-3 pt-2">
-            <a
-              href={directWaUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-4 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-base flex items-center justify-center gap-2.5 shadow-card hover:shadow-float transition-all active:scale-95"
-            >
-              <MessageCircle className="w-5 h-5" />
-              <span>Send Order Message on WhatsApp</span>
-            </a>
-
-            <button
-              onClick={handleCopyMessage}
-              className="w-full py-3 px-4 rounded-xl border border-warm-300 bg-warm-50 hover:bg-white text-neutral-800 font-semibold text-xs flex items-center justify-center gap-2 transition-colors"
-            >
-              <Copy className="w-4 h-4" />
-              <span>{copiedMessage ? 'Order Message Copied to Clipboard!' : 'Copy Order Text to Clipboard (Fallback)'}</span>
-            </button>
-          </div>
-
-          {/* Pre-formatted Message Preview */}
-          <div className="text-left pt-4 border-t border-warm-200">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">
-              Order Message Preview:
+          {/* Timeline / What to expect */}
+          <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-left space-y-3">
+            <h4 className="text-xs font-bold text-emerald-900 uppercase tracking-wider flex items-center gap-1.5">
+              <Clock className="w-4 h-4 text-emerald-700" />
+              <span>What Happens Next?</span>
             </h4>
-            <pre className="p-4 rounded-2xl bg-warm-100 border border-warm-200/80 text-xs text-neutral-800 font-mono whitespace-pre-wrap leading-relaxed overflow-x-auto">
-              {whatsappMessage}
-            </pre>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-neutral-700">
+              <div className="p-2.5 rounded-xl bg-white border border-emerald-100 space-y-1">
+                <div className="font-bold text-emerald-800">1. Order Logged</div>
+                <p className="text-[11px] text-neutral-500 leading-snug">
+                  Your order is received in our admin dashboard.
+                </p>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white border border-emerald-100 space-y-1">
+                <div className="font-bold text-emerald-800">2. Dispatch</div>
+                <p className="text-[11px] text-neutral-500 leading-snug">
+                  Our team packages and ships via courier across India.
+                </p>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white border border-emerald-100 space-y-1">
+                <div className="font-bold text-emerald-800">3. Pay on Delivery</div>
+                <p className="text-[11px] text-neutral-500 leading-snug">
+                  Pay cash or UPI to the delivery agent when your parcel arrives.
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div className="pt-4 flex items-center justify-center gap-4 text-xs">
+          {/* Actions */}
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               to="/shop"
-              className="px-6 py-2.5 rounded-full bg-brand-800 text-white font-semibold"
+              className="w-full sm:w-auto py-3 px-8 rounded-full bg-brand-800 hover:bg-brand-700 text-white font-bold text-xs shadow-sm transition-transform active:scale-95 text-center"
             >
               Continue Shopping
             </Link>
+
+            <a
+              href={`https://wa.me/${(config.whatsappNumber || storeConfig.whatsappNumber).replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi, I placed order #${submittedOrder.reference} on ${config.storeName}.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto py-3 px-6 rounded-full border border-warm-300 hover:bg-warm-100 text-neutral-700 font-semibold text-xs flex items-center justify-center gap-2"
+            >
+              <MessageCircle className="w-4 h-4 text-emerald-600" />
+              <span>Questions? WhatsApp Support</span>
+            </a>
           </div>
         </div>
       </div>
@@ -267,7 +284,7 @@ export default function Checkout() {
           Cash on Delivery Checkout
         </h1>
         <p className="text-xs sm:text-sm text-neutral-500 mt-1">
-          Zero upfront payment. Enter your Kerala delivery details below.
+          Zero advance payment. Enter your shipping details for doorstep delivery anywhere in India.
         </p>
       </div>
 
@@ -277,10 +294,10 @@ export default function Checkout() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="border-b border-warm-200 pb-3 flex items-center justify-between">
               <h2 className="font-display font-bold text-base text-neutral-900">
-                1. Customer & Delivery Address
+                1. Delivery & Contact Details
               </h2>
-              <span className="text-[11px] font-semibold text-brand-800 bg-brand-50 px-2 py-0.5 rounded">
-                Kerala Shipping
+              <span className="text-[11px] font-semibold text-brand-800 bg-brand-50 px-2.5 py-0.5 rounded-full border border-brand-200">
+                Pan-India Shipping
               </span>
             </div>
 
@@ -293,7 +310,7 @@ export default function Checkout() {
                 type="text"
                 value={formData.customerName}
                 onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
-                placeholder="e.g. Arun Kumar / Ananya Menon"
+                placeholder="e.g. Rahul Sharma / Ananya Verma"
                 className={`w-full bg-warm-50 border rounded-xl p-3 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700 ${
                   errors.customerName ? 'border-red-400 bg-red-50/30' : 'border-warm-300'
                 }`}
@@ -306,7 +323,7 @@ export default function Checkout() {
             {/* Mobile Number */}
             <div>
               <label className="block text-xs font-bold text-neutral-700 mb-1">
-                WhatsApp / Mobile Number (10 digits) <span className="text-red-500">*</span>
+                Mobile Number (10 digits) <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-neutral-500">
@@ -317,14 +334,14 @@ export default function Checkout() {
                   maxLength={10}
                   value={formData.customerPhone}
                   onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value.replace(/\D/g, '') })}
-                  placeholder="9847123456"
+                  placeholder="9876543210"
                   className={`w-full bg-warm-50 border rounded-xl p-3 pl-14 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700 ${
                     errors.customerPhone ? 'border-red-400 bg-red-50/30' : 'border-warm-300'
                   }`}
                 />
               </div>
               <p className="text-[11px] text-neutral-500 mt-1">
-                We will send delivery tracking and order updates to this WhatsApp number.
+                Our delivery partner will call you at this number upon parcel arrival.
               </p>
               {errors.customerPhone && (
                 <p className="text-xs text-red-600 mt-1">{errors.customerPhone}</p>
@@ -334,13 +351,13 @@ export default function Checkout() {
             {/* House / Flat name */}
             <div>
               <label className="block text-xs font-bold text-neutral-700 mb-1">
-                House Name / Building / Flat No. <span className="text-red-500">*</span>
+                Flat No. / Building / House Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={formData.houseName}
                 onChange={(e) => setFormData({ ...formData, houseName: e.target.value })}
-                placeholder="e.g. Sreenilayam House / Flat 3B, Skyline Apartments"
+                placeholder="e.g. Flat 4B, Shanti Enclave / House #128"
                 className={`w-full bg-warm-50 border rounded-xl p-3 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700 ${
                   errors.houseName ? 'border-red-400 bg-red-50/30' : 'border-warm-300'
                 }`}
@@ -350,74 +367,66 @@ export default function Checkout() {
               )}
             </div>
 
-            {/* Street / Locality & Post Office */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1">
-                  Street / Locality <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.streetLocality}
-                  onChange={(e) => setFormData({ ...formData, streetLocality: e.target.value })}
-                  placeholder="e.g. Near Temple Road"
-                  className={`w-full bg-warm-50 border rounded-xl p-3 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700 ${
-                    errors.streetLocality ? 'border-red-400 bg-red-50/30' : 'border-warm-300'
-                  }`}
-                />
-                {errors.streetLocality && (
-                  <p className="text-xs text-red-600 mt-1">{errors.streetLocality}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-neutral-700 mb-1">
-                  Post Office / Area <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.postOffice}
-                  onChange={(e) => setFormData({ ...formData, postOffice: e.target.value })}
-                  placeholder="e.g. Kaloor SO / Edappally"
-                  className={`w-full bg-warm-50 border rounded-xl p-3 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700 ${
-                    errors.postOffice ? 'border-red-400 bg-red-50/30' : 'border-warm-300'
-                  }`}
-                />
-                {errors.postOffice && (
-                  <p className="text-xs text-red-600 mt-1">{errors.postOffice}</p>
-                )}
-              </div>
+            {/* Street / Locality */}
+            <div>
+              <label className="block text-xs font-bold text-neutral-700 mb-1">
+                Street / Area / Landmark <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={formData.streetLocality}
+                onChange={(e) => setFormData({ ...formData, streetLocality: e.target.value })}
+                placeholder="e.g. 2nd Main Road, Near Central Bank"
+                className={`w-full bg-warm-50 border rounded-xl p-3 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700 ${
+                  errors.streetLocality ? 'border-red-400 bg-red-50/30' : 'border-warm-300'
+                }`}
+              />
+              {errors.streetLocality && (
+                <p className="text-xs text-red-600 mt-1">{errors.streetLocality}</p>
+              )}
             </div>
 
-            {/* District, State & Pincode */}
+            {/* State, City & PIN Code */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="block text-xs font-bold text-neutral-700 mb-1">
-                  District <span className="text-red-500">*</span>
+                  State / UT <span className="text-red-500">*</span>
                 </label>
                 <select
-                  value={formData.district}
-                  onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-                  className="w-full bg-warm-50 border border-warm-300 rounded-xl p-3 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700"
+                  value={formData.state}
+                  onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                  className={`w-full bg-warm-50 border rounded-xl p-3 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700 ${
+                    errors.state ? 'border-red-400 bg-red-50/30' : 'border-warm-300'
+                  }`}
                 >
-                  {storeConfig.operatingDistricts.map((d) => (
-                    <option key={d} value={d}>
-                      {d}
+                  <option value="">-- Select State / UT --</option>
+                  {INDIAN_STATES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
                     </option>
                   ))}
                 </select>
+                {errors.state && (
+                  <p className="text-xs text-red-600 mt-1">{errors.state}</p>
+                )}
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-neutral-700 mb-1">
-                  State
+                  City / District <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  disabled
-                  value={formData.state}
-                  className="w-full bg-warm-200/50 border border-warm-300 rounded-xl p-3 text-sm text-neutral-600 cursor-not-allowed font-medium"
+                  value={formData.city}
+                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                  placeholder="e.g. Bengaluru / Kochi"
+                  className={`w-full bg-warm-50 border rounded-xl p-3 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700 ${
+                    errors.city ? 'border-red-400 bg-red-50/30' : 'border-warm-300'
+                  }`}
                 />
+                {errors.city && (
+                  <p className="text-xs text-red-600 mt-1">{errors.city}</p>
+                )}
               </div>
 
               <div>
@@ -429,7 +438,7 @@ export default function Checkout() {
                   maxLength={6}
                   value={formData.pincode}
                   onChange={(e) => setFormData({ ...formData, pincode: e.target.value.replace(/\D/g, '') })}
-                  placeholder="682017"
+                  placeholder="560001"
                   className={`w-full bg-warm-50 border rounded-xl p-3 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700 ${
                     errors.pincode ? 'border-red-400 bg-red-50/30' : 'border-warm-300'
                   }`}
@@ -449,7 +458,7 @@ export default function Checkout() {
                 rows={2}
                 value={formData.deliveryInstructions}
                 onChange={(e) => setFormData({ ...formData, deliveryInstructions: e.target.value })}
-                placeholder="e.g. Call before delivery, landmark near petrol pump..."
+                placeholder="e.g. Call before delivery, leave with security if unavailable..."
                 className="w-full bg-warm-50 border border-warm-300 rounded-xl p-3 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-700"
               />
             </div>
@@ -464,7 +473,7 @@ export default function Checkout() {
                   className="mt-1 rounded text-brand-700 focus:ring-brand-700 h-4 w-4 accent-brand-700 flex-shrink-0"
                 />
                 <span className="text-xs text-neutral-600 leading-relaxed">
-                  I consent to sharing my order and delivery details with <strong>{storeConfig.storeName}</strong> strictly for manual order verification, communication, and shipping fulfillment. <span className="text-red-500">*</span>
+                  I confirm my order details and agree to pay via <strong>Cash on Delivery (COD)</strong> upon receiving the parcel. <span className="text-red-500">*</span>
                 </span>
               </label>
               {errors.consent && (
@@ -481,7 +490,7 @@ export default function Checkout() {
                 </span>
               </div>
               <p className="text-xs text-neutral-500">
-                No advance payment is needed. Please keep exact cash of <strong>{formatCurrency(totalCODAmount)}</strong> ready upon parcel delivery.
+                Zero advance payment. Pay <strong>{formatCurrency(totalCODAmount)}</strong> with cash or UPI directly to the delivery courier agent.
               </p>
             </div>
 
@@ -492,11 +501,11 @@ export default function Checkout() {
               className="w-full py-4 px-6 rounded-2xl bg-brand-800 hover:bg-brand-700 text-white font-extrabold text-base flex items-center justify-center gap-2 shadow-card hover:shadow-float transition-all active:scale-95 disabled:opacity-50"
             >
               {submitting ? (
-                <span>Generating Order Request...</span>
+                <span>Placing Your Order...</span>
               ) : (
                 <>
-                  <MessageCircle className="w-5 h-5" />
-                  <span>Send COD Order via WhatsApp</span>
+                  <span>Place Cash on Delivery Order</span>
+                  <ArrowRight className="w-5 h-5" />
                 </>
               )}
             </button>
@@ -550,7 +559,7 @@ export default function Checkout() {
               <span className="font-semibold text-neutral-900">{formatCurrency(subtotal)}</span>
             </div>
             <div className="flex justify-between">
-              <span>Delivery (Kerala)</span>
+              <span>Delivery Shipping</span>
               <span>
                 {shippingFee === 0 ? (
                   <span className="text-emerald-700 font-bold uppercase">Free</span>
@@ -569,10 +578,10 @@ export default function Checkout() {
           <div className="p-3 rounded-xl bg-warm-100/60 border border-warm-200/80 text-[11px] text-neutral-500 space-y-1">
             <div className="flex items-center gap-1.5 font-bold text-neutral-700">
               <Lock className="w-3.5 h-3.5 text-brand-700" />
-              <span>Customer Privacy Guaranteed</span>
+              <span>Customer Privacy & Security</span>
             </div>
             <p>
-              Your contact and address information is never stored in browser cookies or localStorage. It is transmitted securely for fulfillment purposes only.
+              Your contact and address information is used exclusively for order fulfillment and parcel delivery tracking.
             </p>
           </div>
         </div>

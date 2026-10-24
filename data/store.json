@@ -416,6 +416,38 @@
   ],
   "orders": [
     {
+      "customerName": "Aarav Malhotra",
+      "customerPhone": "9811223344",
+      "houseName": "Flat 204, Greater Kailash 1",
+      "streetLocality": "Block B Main Road",
+      "postOffice": "GK 1 PO",
+      "district": "South Delhi",
+      "state": "Delhi (NCT)",
+      "pincode": "110048",
+      "deliveryInstructions": "Call upon arrival",
+      "items": [
+        {
+          "productId": "prod-002",
+          "name": "USB Rechargeable Automatic Water Can Dispenser Pump",
+          "variant": "Matte Black",
+          "quantity": 1,
+          "unitPrice": 389,
+          "totalPrice": 389
+        }
+      ],
+      "subtotal": 389,
+      "shippingFee": 49,
+      "totalAmount": 438,
+      "id": "ord-mvm8z61w",
+      "reference": "NP-202610-7369",
+      "status": "Supplier Order Placed",
+      "supplierOrderRef": "MSH-DELHI-88910",
+      "trackingNumber": "DELV882910293",
+      "adminNotes": "Verified on Meesho at ₹190. Ordered for Delhi courier delivery.",
+      "createdAt": "2026-10-24T10:19:56.132Z",
+      "updatedAt": "2026-10-24T10:20:07.661Z"
+    },
+    {
       "id": "ord-101",
       "reference": "NP-202610-1842",
       "customerName": "Anjali Menon",
@@ -461,12 +493,12 @@
       "reference": "NP-202610-1729",
       "customerName": "Rahul Varma",
       "customerPhone": "9446987654",
-      "houseName": "Sreevalsam House",
-      "streetLocality": "Kowdiar Main Road",
-      "postOffice": "Kowdiar SO",
-      "district": "Thiruvananthapuram",
-      "state": "Kerala",
-      "pincode": "695003",
+      "houseName": "Sreevalsam House, 4th Cross",
+      "streetLocality": "Indiranagar 100ft Road",
+      "postOffice": "Indiranagar PO",
+      "district": "Bengaluru",
+      "state": "Karnataka",
+      "pincode": "560038",
       "deliveryInstructions": "Leave with security guard if not answering.",
       "items": [
         {
@@ -495,15 +527,15 @@
     "whatsappNumber": "91YOURWHATSAPPNUMBER",
     "deliveryFee": 49,
     "freeShippingThreshold": 999,
-    "announcementText": "✨ Special Offer: Free Delivery on orders above ₹999 | Cash on Delivery (COD) Available!",
+    "announcementText": "✨ Special Offer: Free Delivery on orders above ₹999 | Cash on Delivery (COD) Available Pan-India!",
     "showAnnouncement": true,
     "tagline": "Nalla Finds. Nalla Prices.",
-    "description": "Curated, stylish and affordable finds for everyday life in Kerala. 100% Cash on Delivery available across all 14 districts.",
-    "whatsappDisplay": "+91 (Your WhatsApp Number)",
+    "description": "Curated, stylish and affordable finds delivered right to your doorstep across India. 100% Cash on Delivery available pan-India.",
+    "whatsappDisplay": "+91 (Your Support Number)",
     "instagramUrl": "https://instagram.com/nammudepicks",
     "instagramHandle": "@nammudepicks",
     "contactEmail": "support@nammudepicks.in",
-    "defaultState": "Kerala",
+    "defaultState": "",
     "operatingDistricts": [
       "Alappuzha",
       "Ernakulam",
@@ -523,6 +555,6 @@
     "currencySymbol": "₹",
     "codAvailable": true,
     "independentResellerDisclaimer": "Nammude Picks is an independent curated online storefront. We handpick quality products, manually verify orders, and fulfill them via reputable Indian suppliers and manufacturers. We are not officially affiliated with or endorsed by Meesho.",
-    "deliveryEstimateDays": "3 to 7 business days across Kerala"
+    "deliveryEstimateDays": "3 to 7 business days across India"
   }
 }

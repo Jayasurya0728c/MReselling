@@ -24,7 +24,7 @@ export default function ContactUs() {
           Contact & Customer Care
         </h1>
         <p className="text-sm text-neutral-600 max-w-md mx-auto">
-          Need help with your order, product specifications, or delivery? We are here to help in Malayalam or English.
+          Need help with your order, product specifications, or delivery? Our customer team is here to assist you in English, Hindi, or Malayalam.
         </p>
       </div>
 

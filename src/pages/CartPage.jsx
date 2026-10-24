@@ -70,12 +70,12 @@ export default function CartPage() {
           {isFreeShipping ? (
             <div className="flex items-center gap-2 text-brand-900 font-bold">
               <Truck className="w-5 h-5 text-brand-700 flex-shrink-0" />
-              <span>🎉 Congratulations! Your order qualifies for FREE Delivery anywhere in Kerala!</span>
+              <span>🎉 Congratulations! Your order qualifies for FREE Delivery across India!</span>
             </div>
           ) : (
             <div className="space-y-2">
               <div className="flex items-center justify-between text-neutral-800 font-semibold">
-                <span>Add {formatCurrency(amountNeeded)} more for <strong>FREE Delivery</strong> across Kerala</span>
+                <span>Add {formatCurrency(amountNeeded)} more for <strong>FREE Delivery</strong> across India</span>
                 <span className="text-brand-800 font-bold">{shippingProgress}%</span>
               </div>
               <div className="w-full bg-brand-200/60 h-2 rounded-full overflow-hidden">
@@ -170,7 +170,7 @@ export default function CartPage() {
             </div>
 
             <div className="flex justify-between">
-              <span>Delivery Charge (Kerala)</span>
+              <span>Standard Delivery</span>
               <span>
                 {shippingFee === 0 ? (
                   <span className="text-emerald-700 font-bold uppercase">Free</span>

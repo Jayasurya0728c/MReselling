@@ -331,7 +331,7 @@ export default function ProductDetails() {
             )}
           </div>
 
-          {/* Quick Kerala COD & Trust Badges */}
+          {/* Quick Pan-India COD & Trust Badges */}
           <div className="p-4 rounded-2xl bg-white border border-warm-200 shadow-soft space-y-3 text-xs">
             <div className="flex items-center gap-3 text-neutral-800 font-medium">
               <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0" />
@@ -342,7 +342,7 @@ export default function ProductDetails() {
             <div className="flex items-center gap-3 text-neutral-800 font-medium">
               <Truck className="w-5 h-5 text-brand-700 flex-shrink-0" />
               <span>
-                <strong>Kerala Delivery:</strong> Ships to all 14 districts in 3 to 7 working days.
+                <strong>Pan-India Delivery:</strong> Ships across all states in India in 3 to 7 working days.
               </span>
             </div>
             <div className="flex items-center gap-3 text-neutral-800 font-medium">
@@ -357,7 +357,7 @@ export default function ProductDetails() {
           <div className="flex items-center justify-between p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-xs text-emerald-950">
             <div className="flex items-center gap-2">
               <MessageCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-              <span>Have doubts about this product? Chat in Malayalam or English.</span>
+              <span>Have questions about this product? Chat with customer support.</span>
             </div>
             <a
               href={`https://wa.me/${storeConfig.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi Nammude Picks, I have a question about ${product.name}`)}`}

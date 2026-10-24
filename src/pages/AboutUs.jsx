@@ -15,7 +15,7 @@ export default function AboutUs() {
           About {storeConfig.storeName}
         </h1>
         <p className="text-base text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-          Bringing carefully curated, affordable lifestyle finds, viral gadgets, and traditional fashion right to your doorstep across Kerala.
+          Bringing carefully curated, affordable lifestyle finds, viral gadgets, and quality fashion right to your doorstep across India.
         </p>
       </div>
 
@@ -26,7 +26,7 @@ export default function AboutUs() {
             Who We Are
           </h2>
           <p>
-            Welcome to <strong>{storeConfig.storeName}</strong> ("Our Picks"). We are an independent, Kerala-based online reselling and curation initiative. In a crowded internet filled with low-quality copies and unreliable delivery promises, our mission is simple: <em>we spend hours researching, testing, and selecting only genuinely useful and stylish products that offer honest value for money</em>.
+            Welcome to <strong>{storeConfig.storeName}</strong> ("Our Picks"). We are an independent Indian online reselling and curated lifestyle initiative. In a crowded internet filled with low-quality copies and unreliable delivery promises, our mission is simple: <em>we spend hours researching, testing, and selecting only genuinely useful and stylish products that offer honest value for money</em>.
           </p>
           <p>
             Whether it's a traditional Palakka necklace for an upcoming family wedding, a smart automatic water can pump for your kitchen, or a wireless lapel microphone for your Instagram content creation, we make sure each product is worth your hard-earned money.
@@ -58,9 +58,9 @@ export default function AboutUs() {
             <div className="w-8 h-8 rounded-lg bg-brand-800 text-white flex items-center justify-center font-bold">
               3
             </div>
-            <h3 className="font-bold text-neutral-900 text-base">Direct WhatsApp Updates</h3>
+            <h3 className="font-bold text-neutral-900 text-base">Direct Customer Updates</h3>
             <p className="text-xs text-neutral-600">
-              No robotic support tickets. You interact directly with our small Kerala team over WhatsApp for order confirmation and tracking.
+              No robotic support tickets. You receive prompt personal updates from our team for order confirmation, dispatch, and courier tracking.
             </p>
           </div>
 
@@ -68,9 +68,9 @@ export default function AboutUs() {
             <div className="w-8 h-8 rounded-lg bg-brand-800 text-white flex items-center justify-center font-bold">
               4
             </div>
-            <h3 className="font-bold text-neutral-900 text-base">All 14 Districts Covered</h3>
+            <h3 className="font-bold text-neutral-900 text-base">Pan-India Delivery</h3>
             <p className="text-xs text-neutral-600">
-              From Kasaragod down to Thiruvananthapuram, our courier logistics partners ensure reliable delivery within 3 to 7 working days.
+              Across all 28 states and 8 union territories, our national courier partners ensure reliable Cash on Delivery within 3 to 7 working days.
             </p>
           </div>
         </div>

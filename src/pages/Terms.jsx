@@ -37,7 +37,7 @@ export default function Terms() {
           <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm">
             <li>Current stock availability with our wholesale supplier partners.</li>
             <li>Accurate selling price and delivery eligibility for your postal PIN code.</li>
-            <li>Customer confirmation via WhatsApp.</li>
+            <li>Customer contact verification and delivery address details.</li>
           </ul>
         </section>
 
@@ -46,7 +46,7 @@ export default function Terms() {
             2. Pricing & Currency
           </h2>
           <p>
-            All prices listed on this website are in Indian Rupees (INR - ₹). We reserve the right to modify prices, discontinue products, or correct typographical errors at any time prior to order confirmation. If a product price or stock status changes before order placement on the supplier platform, we will notify the customer via WhatsApp before fulfilling the order.
+            All prices listed on this website are in Indian Rupees (INR - ₹). We reserve the right to modify prices, discontinue products, or correct typographical errors at any time prior to order confirmation. If a product price or stock status changes before order placement on the supplier platform, we will notify the customer prior to fulfilling the order.
           </p>
         </section>
 
@@ -55,7 +55,7 @@ export default function Terms() {
             3. Delivery & Courier Performance
           </h2>
           <p>
-            While we make every effort to ensure packages arrive within our estimated 3 to 7 working days, delivery timelines are dependent on third-party courier services and regional conditions (such as severe monsoon weather or public holidays in Kerala). {storeConfig.storeName} is not liable for incidental delays caused by courier logistics.
+            While we make every effort to ensure packages arrive within our estimated 3 to 7 working days, delivery timelines are dependent on third-party courier services and regional conditions (such as severe weather, transport disruptions, or holidays across Indian states). {storeConfig.storeName} is not liable for incidental delays caused by courier logistics.
           </p>
         </section>
 

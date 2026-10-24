@@ -128,13 +128,13 @@ export default function Shop() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-warm-200">
         <div>
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" /> Curated Kerala Catalog
+            <Sparkles className="w-3.5 h-3.5" /> Curated Indian Collection
           </div>
           <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-neutral-900 mt-1">
             Shop All Finds
           </h1>
           <p className="text-xs sm:text-sm text-neutral-500 mt-1">
-            Carefully selected products with guaranteed Cash on Delivery across Kerala.
+            Carefully selected products with guaranteed Cash on Delivery across India.
           </p>
         </div>
 

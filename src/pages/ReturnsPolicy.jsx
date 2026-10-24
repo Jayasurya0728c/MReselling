@@ -10,7 +10,7 @@ export default function ReturnsPolicy() {
           Cancellation, Return & Refund Policy
         </h1>
         <p className="text-xs sm:text-sm text-neutral-500">
-          Transparent, honest terms for {storeConfig.storeName} customers in Kerala
+          Transparent, honest terms for {storeConfig.storeName} customers across India
         </p>
       </div>
 

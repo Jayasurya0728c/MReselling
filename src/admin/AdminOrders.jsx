@@ -136,7 +136,7 @@ export default function AdminOrders() {
     let text = `Hi ${selectedOrder.customerName}, this is regarding your Nammude Picks order ${selectedOrder.reference}.\n\n`;
 
     if (editStatus === 'New Request' || editStatus === 'Awaiting Customer Confirmation') {
-      text += `We have received your COD order request for ${formatCurrency(selectedOrder.totalAmount)}. Could you please confirm if this delivery address in ${selectedOrder.district} is correct so we can dispatch your parcel?`;
+      text += `We have received your COD order request for ${formatCurrency(selectedOrder.totalAmount)}. Could you please confirm if this delivery address in ${selectedOrder.district || selectedOrder.city || ''}${selectedOrder.state ? `, ${selectedOrder.state}` : ''} is correct so we can dispatch your parcel?`;
     } else if (editStatus === 'Confirmed' || editStatus === 'Supplier Order Placed') {
       text += `Good news! Your order has been confirmed and placed with our supplier. We will share your courier tracking link as soon as the package is dispatched.`;
     } else if (editStatus === 'Shipped') {
@@ -153,7 +153,7 @@ export default function AdminOrders() {
 
   const handleCopyDeliveryAddress = () => {
     if (!selectedOrder) return;
-    const full = `${selectedOrder.customerName}\nPhone: ${selectedOrder.customerPhone}\n${selectedOrder.houseName}\n${selectedOrder.streetLocality}\n${selectedOrder.postOffice}\n${selectedOrder.district}, Kerala - ${selectedOrder.pincode}\nInstructions: ${selectedOrder.deliveryInstructions || 'None'}`;
+    const full = `${selectedOrder.customerName}\nPhone: ${selectedOrder.customerPhone}\n${selectedOrder.houseName}\n${selectedOrder.streetLocality}\n${selectedOrder.postOffice ? `${selectedOrder.postOffice}\n` : ''}${selectedOrder.district || selectedOrder.city || ''}, ${selectedOrder.state || 'India'} - ${selectedOrder.pincode}\nInstructions: ${selectedOrder.deliveryInstructions || 'None'}`;
     navigator.clipboard.writeText(full);
     setCopiedAddress(true);
     setTimeout(() => setCopiedAddress(false), 2000);
@@ -190,7 +190,9 @@ export default function AdminOrders() {
           o.reference?.toLowerCase().includes(q) ||
           o.customerName?.toLowerCase().includes(q) ||
           o.customerPhone?.includes(q) ||
-          o.district?.toLowerCase().includes(q)
+          o.district?.toLowerCase().includes(q) ||
+          o.city?.toLowerCase().includes(q) ||
+          o.state?.toLowerCase().includes(q)
         );
       }
       return true;
@@ -217,7 +219,7 @@ export default function AdminOrders() {
             Order Management
           </h1>
           <p className="text-xs sm:text-sm text-neutral-500 mt-1">
-            Track customer requests, verify on Meesho, and coordinate Kerala COD fulfillment.
+            Track customer requests, verify on Meesho, and coordinate Pan-India COD fulfillment across all 28 states and UTs.
           </p>
         </div>
 
@@ -234,7 +236,7 @@ export default function AdminOrders() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search reference, customer, phone, district..."
+              placeholder="Search reference, customer, phone, city, state..."
               className="w-full bg-warm-50 border border-warm-200 rounded-xl py-2 pl-9 pr-3 text-xs text-neutral-800 focus:outline-none focus:ring-2 focus:ring-brand-700"
             />
             <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -310,7 +312,7 @@ export default function AdminOrders() {
                     </td>
                     <td className="py-3.5 px-3">
                       <div className="font-bold text-neutral-900">{o.customerName}</div>
-                      <div className="text-[11px] text-neutral-500">{o.customerPhone} ({o.district})</div>
+                      <div className="text-[11px] text-neutral-500">{o.customerPhone} ({o.district || o.city || ''}{o.state ? `, ${o.state}` : ''})</div>
                     </td>
                     <td className="py-3.5 px-3 text-neutral-700">
                       {o.items?.length || 1} item(s)
@@ -426,15 +428,15 @@ export default function AdminOrders() {
               <div className="p-4 rounded-2xl bg-white border border-warm-200 shadow-soft space-y-2 text-xs">
                 <div className="flex items-center gap-1.5 font-bold text-neutral-900">
                   <MapPin className="w-4 h-4 text-brand-700" />
-                  <span>Delivery Address (Kerala)</span>
+                  <span>Delivery Address (Pan-India)</span>
                 </div>
                 <div className="text-neutral-700 space-y-0.5 pl-5">
                   <div className="font-bold text-neutral-900">{selectedOrder.customerName}</div>
                   <div>{selectedOrder.houseName}</div>
                   <div>{selectedOrder.streetLocality}</div>
-                  <div>{selectedOrder.postOffice}</div>
+                  {selectedOrder.postOffice && <div>{selectedOrder.postOffice}</div>}
                   <div className="font-semibold text-brand-800">
-                    {selectedOrder.district}, Kerala - PIN: {selectedOrder.pincode}
+                    {selectedOrder.district || selectedOrder.city || ''}, {selectedOrder.state || 'India'} - PIN: {selectedOrder.pincode}
                   </div>
                   {selectedOrder.deliveryInstructions && (
                     <div className="mt-1 pt-1 border-t border-warm-100 text-neutral-500 italic">

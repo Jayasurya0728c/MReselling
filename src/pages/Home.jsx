@@ -71,15 +71,15 @@ export default function Home() {
   const faqs = [
     {
       q: 'How does Cash on Delivery (COD) work on Nammude Picks?',
-      a: 'You can order without paying anything online! Simply add items to your bag, fill in your Kerala delivery address and WhatsApp number at checkout. You pay only in cash when our courier delivers the package to your hands.'
+      a: 'You can order without paying anything online! Simply add items to your bag, fill in your delivery address at checkout, and place your order. You pay only in cash or UPI when our courier delivers the package to your doorstep.'
     },
     {
-      q: 'Do you deliver across all districts in Kerala?',
-      a: 'Yes! We deliver across all 14 districts in Kerala, from Kasaragod to Thiruvananthapuram. Standard delivery takes 3 to 7 business days depending on your postal pin code.'
+      q: 'Do you deliver across all states in India?',
+      a: 'Yes! We deliver across all 28 states and union territories in India. Standard delivery takes 3 to 7 business days depending on your postal PIN code.'
     },
     {
-      q: 'Why do I receive order details on WhatsApp?',
-      a: 'We personally verify every customer order to ensure product availability and correct address details. After you submit the checkout form, sending the pre-filled WhatsApp message allows our team to confirm your order and keep you updated with courier tracking.'
+      q: 'How are orders confirmed and processed?',
+      a: 'Your order is submitted directly through our website into our administrative order management system. Our team verifies stock, packages the item, and ships it via reliable courier partners with door-to-door tracking.'
     },
     {
       q: 'Is Nammude Picks an official Meesho website?',
@@ -101,7 +101,7 @@ export default function Home() {
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-100/80 border border-brand-200 text-brand-900 text-xs sm:text-sm font-semibold">
                 <Sparkles className="w-4 h-4 text-brand-700" />
-                <span>Curated for Kerala Smart Homes & Creators</span>
+                <span>Curated for Smart Homes & Creators Across India</span>
               </div>
 
               <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-neutral-950 tracking-tight leading-[1.15]">
@@ -110,7 +110,7 @@ export default function Home() {
               </h1>
 
               <p className="text-base sm:text-lg text-neutral-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                Discover useful, stylish and affordable finds for everyday life. Handpicked accessories, viral gadgets, and home essentials with 100% Cash on Delivery across Kerala.
+                Discover useful, stylish and affordable finds for everyday life. Handpicked accessories, viral gadgets, and home essentials with 100% Cash on Delivery across India.
               </p>
 
               {/* CTAs */}
@@ -123,15 +123,13 @@ export default function Home() {
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
-                <a
-                  href={`https://wa.me/${storeConfig.whatsappNumber.replace(/[^0-9]/g, '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/shop"
                   className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white hover:bg-warm-100 border border-warm-300 text-neutral-800 font-semibold text-sm sm:text-base flex items-center justify-center gap-2 shadow-sm transition-all"
                 >
-                  <MessageCircle className="w-5 h-5 text-emerald-600" />
-                  <span>Order on WhatsApp</span>
-                </a>
+                  <ShoppingBag className="w-5 h-5 text-brand-700" />
+                  <span>Explore Collection</span>
+                </Link>
               </div>
 
               {/* Trust badges */}
@@ -142,7 +140,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Truck className="w-4 h-4 text-brand-700 flex-shrink-0" />
-                  <span className="text-xs text-neutral-700 font-medium">14 Districts Coverage</span>
+                  <span className="text-xs text-neutral-700 font-medium">Pan-India Delivery</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-brand-700 flex-shrink-0" />
@@ -156,12 +154,12 @@ export default function Home() {
               <div className="relative mx-auto max-w-sm sm:max-w-md rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white">
                 <img
                   src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80"
-                  alt="Kerala Traditional Jewelry and Lifestyle Finds"
+                  alt="Curated Indian Jewelry and Lifestyle Finds"
                   className="w-full h-[380px] sm:h-[440px] object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
                   <span className="bg-amber-400 text-neutral-950 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full w-max mb-2">
-                    Kerala Festive Pick
+                    Curated Festive Pick
                   </span>
                   <h3 className="font-display font-bold text-lg">Traditional Palakka Choker</h3>
                   <div className="flex items-center justify-between mt-2">
@@ -182,8 +180,8 @@ export default function Home() {
                   🌴
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-neutral-900">Direct Delivery in Kerala</div>
-                  <div className="text-[11px] text-neutral-500">Pay cash upon delivery at your door</div>
+                  <div className="text-xs font-bold text-neutral-900">Direct Delivery Across India</div>
+                  <div className="text-[11px] text-neutral-500">Pay cash or UPI upon delivery at your door</div>
                 </div>
               </div>
             </div>
@@ -285,10 +283,10 @@ export default function Home() {
                 <Flame className="w-4 h-4 fill-current" /> Viral On Instagram Reels
               </div>
               <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mt-1">
-                Trending in Kerala
+                Trending Across India
               </h2>
               <p className="text-xs sm:text-sm text-neutral-400 mt-1 max-w-md">
-                Fast-moving gadgets, lifestyle products, and aesthetic lights featured in our latest Malayalam video reviews.
+                Fast-moving gadgets, lifestyle products, and viral finds popular on Instagram and online creators.
               </p>
             </div>
             <Link
@@ -387,7 +385,7 @@ export default function Home() {
             Verified Shopping Experience
           </h2>
           <p className="text-xs sm:text-sm text-neutral-500 mt-1">
-            Transparent reselling designed specifically for Kerala customers.
+            Transparent curated commerce delivering across India.
           </p>
         </div>
 
@@ -416,9 +414,9 @@ export default function Home() {
             <div className="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center mb-3">
               <Truck className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-neutral-900">Kerala-Wide Delivery</h4>
+            <h4 className="font-bold text-sm text-neutral-900">Pan-India Delivery</h4>
             <p className="text-xs text-neutral-500 mt-1 leading-relaxed">
-              Fast courier dispatch to villages and towns across all 14 districts within 3 to 7 working days.
+              Fast courier dispatch to villages, towns, and cities across India within 3 to 7 working days.
             </p>
           </div>
 
@@ -426,9 +424,9 @@ export default function Home() {
             <div className="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center mb-3">
               <MessageCircle className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-neutral-900">Friendly WhatsApp Care</h4>
+            <h4 className="font-bold text-sm text-neutral-900">Dedicated Support Care</h4>
             <p className="text-xs text-neutral-500 mt-1 leading-relaxed">
-              Have doubts about sizing, color, or delivery? Chat directly with us in Malayalam or English on WhatsApp.
+              Have doubts about sizing, color, or delivery? Chat directly with our customer team on WhatsApp in English, Hindi, or Malayalam.
             </p>
           </div>
         </div>

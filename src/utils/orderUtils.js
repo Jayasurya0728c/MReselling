@@ -14,7 +14,7 @@ export function formatWhatsAppOrderMessage({
   streetLocality,
   postOffice,
   district,
-  state = 'Kerala',
+  state = 'India',
   pincode,
   deliveryInstructions = '',
   items = [],

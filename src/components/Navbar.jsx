@@ -48,7 +48,7 @@ export default function Navbar() {
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
               <span className="bg-brand-600 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full">
-                Kerala
+                All India
               </span>
               <span className="font-medium truncate">{config.announcementText}</span>
             </div>
@@ -62,7 +62,7 @@ export default function Navbar() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 hover:text-white transition-colors"
               >
-                <MessageCircle className="w-3.5 h-3.5 text-emerald-300" /> WhatsApp Orders
+                <MessageCircle className="w-3.5 h-3.5 text-emerald-300" /> Need Help? Chat Support
               </a>
             </div>
           </div>
@@ -122,7 +122,7 @@ export default function Navbar() {
             <Search className="w-5 h-5" />
           </button>
 
-          {/* WhatsApp Direct Order Help */}
+          {/* Customer Support Help */}
           <a
             href={`https://wa.me/${storeConfig.whatsappNumber.replace(/[^0-9]/g, '')}`}
             target="_blank"
@@ -130,7 +130,7 @@ export default function Navbar() {
             className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 transition-colors"
           >
             <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Order on WhatsApp</span>
+            <span>Support</span>
           </a>
 
           {/* Cart Trigger */}
@@ -159,7 +159,7 @@ export default function Navbar() {
               autoFocus
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search products in Kerala..."
+              placeholder="Search 1000+ products across India..."
               className="w-full bg-warm-100 border border-warm-200 rounded-lg py-2.5 pl-10 pr-10 text-sm text-neutral-800 focus:outline-none focus:ring-2 focus:ring-brand-700"
             />
             <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -192,7 +192,7 @@ export default function Navbar() {
             ))}
           </div>
           <div className="text-xs text-neutral-500 font-medium">
-            Fast Kerala Delivery • 100% COD
+            Fast Pan-India Delivery • 100% Cash on Delivery
           </div>
         </div>
       </nav>

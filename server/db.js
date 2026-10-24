@@ -60,12 +60,12 @@ const defaultOrders = [
     reference: 'NP-202610-1729',
     customerName: 'Rahul Varma',
     customerPhone: '9446987654',
-    houseName: 'Sreevalsam House',
-    streetLocality: 'Kowdiar Main Road',
-    postOffice: 'Kowdiar SO',
-    district: 'Thiruvananthapuram',
-    state: 'Kerala',
-    pincode: '695003',
+    houseName: 'Sreevalsam House, 4th Cross',
+    streetLocality: 'Indiranagar 100ft Road',
+    postOffice: 'Indiranagar PO',
+    district: 'Bengaluru',
+    state: 'Karnataka',
+    pincode: '560038',
     deliveryInstructions: 'Leave with security guard if not answering.',
     items: [
       {

@@ -111,7 +111,7 @@ export default function AdminOverview() {
             Overview Dashboard
           </h1>
           <p className="text-xs sm:text-sm text-neutral-500 mt-1">
-            Real-time orders, Kerala COD metrics, and inventory monitoring.
+            Real-time orders, Pan-India COD fulfillment metrics, and inventory monitoring.
           </p>
         </div>
 
@@ -313,7 +313,7 @@ export default function AdminOverview() {
                       <div className="text-[11px] text-neutral-500">{order.customerPhone}</div>
                     </td>
                     <td className="py-3 px-3 text-neutral-700 font-medium">
-                      {order.district}, Kerala
+                      {order.district || order.city || ''}{order.state ? `, ${order.state}` : ''}
                     </td>
                     <td className="py-3 px-3 font-bold text-neutral-900">
                       {formatCurrency(order.totalAmount)}

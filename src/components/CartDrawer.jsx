@@ -64,7 +64,7 @@ export default function CartDrawer() {
               {isFreeShipping ? (
                 <div className="flex items-center gap-2 text-brand-800 font-semibold">
                   <Truck className="w-4 h-4 text-brand-600 flex-shrink-0" />
-                  <span>🎉 Congrats! Your order qualifies for <strong>FREE Delivery</strong> in Kerala!</span>
+                  <span>🎉 Congrats! Your order qualifies for <strong>FREE Delivery</strong> across India!</span>
                 </div>
               ) : (
                 <div>
@@ -94,7 +94,7 @@ export default function CartDrawer() {
                   Your bag is empty
                 </h3>
                 <p className="text-sm text-neutral-500 mt-1 max-w-xs">
-                  Discover trending lifestyle finds, traditional jewelry, and kitchen gadgets handpicked for Kerala.
+                  Discover trending lifestyle finds, traditional accessories, and everyday essentials handpicked across India.
                 </p>
                 <button
                   onClick={() => {
@@ -188,7 +188,7 @@ export default function CartDrawer() {
                   <span className="font-semibold text-neutral-900">{formatCurrency(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Delivery to Kerala</span>
+                  <span>Pan-India Delivery</span>
                   <span>
                     {shippingFee === 0 ? (
                       <span className="text-emerald-700 font-bold uppercase">Free</span>

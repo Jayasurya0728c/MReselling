@@ -83,7 +83,7 @@ export default function AdminSettings() {
       <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-950 flex items-start gap-2.5">
         <ShieldAlert className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
         <p className="leading-relaxed">
-          <strong>Important Business Principle:</strong> This storefront uses manual WhatsApp verification and manual supplier ordering. Do not claim automatic Meesho API connections, automatic warehouse stock sync, or instant supplier guarantees to customers.
+          <strong>Important Business Principle:</strong> Orders are placed directly on the website into your admin database. Review customer details in the Orders tab, check stock on Meesho, place fulfillment to the customer's Indian address, and record the tracking number.
         </p>
       </div>
 
@@ -182,13 +182,13 @@ export default function AdminSettings() {
         <div className="bg-white rounded-3xl border border-warm-200 shadow-soft p-6 space-y-4">
           <h2 className="font-display font-bold text-base text-neutral-900 pb-2 border-b border-warm-100 flex items-center gap-2">
             <Truck className="w-4 h-4 text-brand-700" />
-            <span>Kerala Shipping & Delivery Rates</span>
+            <span>Pan-India Shipping & Delivery Rates</span>
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-bold text-neutral-700 mb-1">
-                Standard Kerala Delivery Fee (₹)
+                Standard Pan-India Delivery Fee (₹)
               </label>
               <input
                 type="number"

@@ -14,25 +14,25 @@ export default function FAQPage() {
           a: 'No! All orders on Nammude Picks are 100% Cash on Delivery (COD). You do not need a debit card, credit card, or advance UPI. You only pay the courier when the package reaches your house.'
         },
         {
-          q: 'Why does the checkout redirect me to WhatsApp?',
-          a: 'We operate a personal, verified fulfillment model. Sending the pre-filled WhatsApp message lets our customer team verify your shipping address, check live supplier stock, and confirm your order before dispatch.'
+          q: 'How do I place an order on the website?',
+          a: 'Simply add products to your shopping bag, proceed to checkout, enter your Indian delivery address and PIN code, and click "Place Cash on Delivery Order". Your order is immediately recorded in our system with a unique reference number. You do not need to pay anything upfront!'
         },
         {
           q: 'Can I cancel my order if I change my mind?',
-          a: 'Yes, you can cancel your order request at any time before dispatch by messaging our WhatsApp number. Once dispatched with a live courier tracking number, orders cannot be cancelled mid-transit.'
+          a: 'Yes, you can cancel your order request at any time before dispatch by reaching out to our customer support. Once dispatched with a live courier tracking number, orders cannot be cancelled mid-transit.'
         }
       ]
     },
     {
-      category: 'Shipping & Delivery in Kerala',
+      category: 'Shipping & Delivery Across India',
       questions: [
         {
-          q: 'How many days will it take for my order to reach Kerala?',
-          a: 'Delivery typically takes 3 to 7 business days from order confirmation. City centers like Kochi, Kozhikode, and Thiruvananthapuram generally receive orders in 3 to 4 days, while rural and high-range areas take 5 to 7 days.'
+          q: 'How many days will it take for my order to reach me?',
+          a: 'Delivery typically takes 3 to 7 business days from order confirmation depending on your state and PIN code. Metro cities (Delhi, Mumbai, Bengaluru, Chennai, Hyderabad, Kochi, Kolkata) generally receive orders in 3 to 4 days, while other regions and towns take 4 to 7 business days.'
         },
         {
           q: 'How much do you charge for shipping?',
-          a: `Standard shipping across Kerala is flat ₹${storeConfig.deliveryFee}. However, if your cart subtotal is ₹${storeConfig.freeShippingThreshold} or higher, delivery is completely FREE!`
+          a: `Standard shipping across India is flat ₹${storeConfig.deliveryFee}. However, if your cart subtotal is ₹${storeConfig.freeShippingThreshold} or higher, delivery is completely FREE!`
         },
         {
           q: 'Can I open the parcel before paying the courier?',
@@ -69,7 +69,7 @@ export default function FAQPage() {
           Frequently Asked Questions
         </h1>
         <p className="text-sm text-neutral-600 max-w-md mx-auto">
-          Everything you need to know about shopping, delivery across Kerala, and Cash on Delivery.
+          Everything you need to know about shopping, delivery across India, and Cash on Delivery.
         </p>
       </div>
 

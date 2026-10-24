@@ -27,8 +27,8 @@ export default function Footer() {
               <Truck className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-white font-semibold text-sm">All 14 Kerala Districts</h4>
-              <p className="text-xs text-neutral-400 mt-1">Direct shipping from Kasaragod to Thiruvananthapuram via trusted couriers.</p>
+              <h4 className="text-white font-semibold text-sm">Pan-India Delivery</h4>
+              <p className="text-xs text-neutral-400 mt-1">Delivering across all 28 states & 8 union territories via trusted national couriers.</p>
             </div>
           </div>
 
@@ -37,8 +37,8 @@ export default function Footer() {
               <RefreshCw className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-white font-semibold text-sm">WhatsApp Order Updates</h4>
-              <p className="text-xs text-neutral-400 mt-1">Personal order updates and verification right on your WhatsApp.</p>
+              <h4 className="text-white font-semibold text-sm">Fast Dispatch & Tracking</h4>
+              <p className="text-xs text-neutral-400 mt-1">Real-time courier tracking updates from our team to your doorstep.</p>
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-xs text-neutral-400 leading-relaxed">
-              Curated everyday finds, viral gadgets, kitchen essentials, and traditional accessories for smart homes across Kerala.
+              Curated everyday finds, viral gadgets, kitchen essentials, and traditional accessories for smart homes across India.
             </p>
             <div className="flex items-center gap-3 pt-2">
               <a
@@ -193,7 +193,7 @@ export default function Footer() {
                 <MapPin className="w-4 h-4 text-neutral-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <div className="text-neutral-300 font-medium">Coverage</div>
-                  <div className="text-neutral-400 text-[11px]">All 14 Districts of Kerala</div>
+                  <div className="text-neutral-400 text-[11px]">Pan-India (All 28 States & UTs)</div>
                 </div>
               </div>
             </div>
@@ -208,10 +208,10 @@ export default function Footer() {
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-neutral-400">
             <div>
-              © {currentYear} {storeConfig.storeName}. All rights reserved. Designed for Kerala shoppers.
+              © {currentYear} {storeConfig.storeName}. All rights reserved. Curated for smart shoppers across India.
             </div>
             <div className="flex items-center gap-4 text-neutral-400 text-xs">
-              <span>Made with care in Kerala 🌴</span>
+              <span>Delivering Across India 🇮🇳</span>
             </div>
           </div>
         </div>
