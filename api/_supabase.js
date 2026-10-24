@@ -5,10 +5,15 @@ import { createClient } from '@supabase/supabase-js';
 let supabase = null;
 
 export function getSupabase() {
-  const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+  let url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  let key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 
   if (!url || !key) return null;
+
+  // Normalize: remove trailing slash, strip accidental /rest/v1 suffix, trim spaces
+  url = url.trim().replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
+  key = key.trim();
+
   if (!supabase) {
     supabase = createClient(url, key, {
       auth: { persistSession: false, autoRefreshToken: false }
